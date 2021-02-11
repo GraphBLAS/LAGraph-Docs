@@ -35,10 +35,8 @@
         \multirow{2}{*}{\tt apply}               & \multirow{2}{*}{apply unary operator}                                     & $\grbm{C} \grbmask{\grbm{M}} $                                                                         & $\grbaccumeq{} \grbf{f}{\grbm{A}}$                                                  \\
                                                  &                                                                           & $\grbv{w} \grbmask{\grbv{m}} $                                                                         & $\grbaccumeq{} \grbf{f}{\grbv{u}}$                                                  \\
         \midrule
-        \multirow{4}{*}{\tt select (GxB)}        & \multirow{4}{*}{apply select operator}                                    & $\grbm{C} \grbmask{\grbm{M}} $                                                                         & $\grbaccumeq{} \grbselect{\grbm{A}, \grbf{f}{\grbs{k}}}$                            \\
-                                                 &                                                                           & $\grbm{C} \grbmask{\grbm{M}} $                                                                         & $\grbaccumeq{} \grbselect{\grbs{low} \leq \grbm{A} \leq \grbs{up}}$                 \\
-                                                 &                                                                           & $\grbv{w} \grbmask{\grbv{m}} $                                                                         & $\grbaccumeq{} \grbselect{\grbv{u}, \grbf{f}{\grbs{k}}}$                            \\
-                                                 &                                                                           & $\grbv{w} \grbmask{\grbv{m}} $                                                                         & $\grbaccumeq{} \grbselect{\grbs{low} \leq \grbv{u} \leq \grbs{up}}$                 \\
+        \multirow{2}{*}{\tt select}              & \multirow{2}{*}{apply select operator}                                    & $\grbm{C} \grbmask{\grbm{M}} $                                                                         & $\grbaccumeq{} \grbm{A}\grbselect{\grbf{f}{\grbm{A}, \grbs{k}}}$                            \\
+                                                 &                                                                           & $\grbv{w} \grbmask{\grbv{m}} $                                                                         & $\grbaccumeq{} \grbv{u}\grbselect{\grbf{f}{\grbv{u}, \grbs{k}}}$                            \\
         \midrule
         \multirow{3}{*}{\tt reduce}              & reduce matrix to column vector                                            & $\grbv{w} \grbmask{\grbv{m}} $                                                                         & $\grbaccumeq{} \grbreduce{\grbplus}{\grbs{j}}{\grbm{A}}{:,\grbs{j}}$         \\
                                                  & reduce matrix to scalar                                                   & $\grbs{s} $                                                                                            & $\grbaccumeq{} \grbreduce{\grbplus}{\grbs{i}\grbs{j}}{\grbm{A}}{\grbs{i},\grbs{j}}$ \\
@@ -72,7 +70,7 @@
         Matrices and vectors are typeset in bold, starting with uppercase ($\grbm{A}$) and lowercase ($\grbv{u}$) letters, respectively.
         Scalars including indices are lowercase italic ($\grbs{k}$, $\grbs{i}$, $\grbs{j}$) while arrays are lowercase bold italic ($\grba{x}$, $\grba{i}$, $\grba{j}$).
         $\grbplus$ and $\grbtimes$ are the addition and multiplication operators forming a semiring and default to conventional arithmetic $+$ and $\times$ operators.
-        $\grbaccum$ is the accumulation operator.
+        $\grbaccum$ is the accumulator operator.
     }
     \label{tab:graphblas-notation}
 \end{table}

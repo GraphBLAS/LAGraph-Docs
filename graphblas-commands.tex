@@ -120,9 +120,8 @@
     \newcommand{\grbrange}[2]{#1 \! : \! #2}
     \newcommand{\grbdontcare}{\textvisiblespace}
 
-    \newcommand{\grboperationnoarg}[1]{\textit{#1}}
+    \newcommand{\grboperationnoarg}[1]{\textrm{#1}}
 }
-
 
 % do not lange/rangle for tuples as it is already used for masks
 % do not use grbtuple for the time being
@@ -197,25 +196,6 @@
 \newcommand{\grbeWiseAdd}[1]{\underset{\raisebox{.4ex}{$\scriptscriptstyle\cup$}}{#1}}
 \newcommand{\grbeWiseMult}[1]{\underset{\raisebox{.4ex}{$\scriptscriptstyle\cap$}}{#1}}
 
-% C<M> += A +.* B
-%\newcommand{\grbmult}[6]{#1{#2} \ #3\!= #5 #4 #6}
-
-% stock matrices
-\newcommand{\grbmA}{\grbm{A}}
-\newcommand{\grbmB}{\grbm{B}}
-\newcommand{\grbmC}{\grbm{C}}
-\newcommand{\grbmM}{\grbm{M}}
-% stock vectors
-\newcommand{\grbvu}{\grbv{u}}
-\newcommand{\grbvv}{\grbv{v}}
-\newcommand{\grbvw}{\grbv{w}}
-\newcommand{\grbvm}{\grbv{m}}
-% stock scalars
-\newcommand{\grbsi}{\grbs{i}}
-\newcommand{\grbsj}{\grbs{j}}
-\newcommand{\grbsn}{\grbs{n}}
-\newcommand{\grbss}{\grbs{s}}
-
 % operations
 \newcommand{\grboperation}[2]{\grboperationnoarg{#1}(#2)}
 \newcommand{\grbnrows}[1]{\grboperation{nrows}{#1}}
@@ -223,35 +203,11 @@
 \newcommand{\grbnvals}[1]{\grboperation{nvals}{#1}}
 \newcommand{\grbclear}[1]{\grboperation{clear}{#1}}
 \newcommand{\grbdiag}[1]{\grboperation{diag}{#1}}
-\newcommand{\grbselect}[1]{\grboperation{select}{#1}}
+\newcommand{\grbselect}[1]{\grbmask{#1}}
 \newcommand{\grbkron}[1]{\grboperation{kron}{#1}}
 \newcommand{\grbtril}[1]{\grboperation{tril}{#1}}
 \newcommand{\grbtriu}[1]{\grboperation{triu}{#1}}
 \newcommand{\grbondiag}[1]{\grboperation{ondiag}{#1}}
 \newcommand{\grboffdiag}[1]{\grboperation{offdiag}{#1}}
 
-% bfs
-\newcommand{\grbFrontier}{\grbm{Frontier}}
-\newcommand{\grbNext}{\grbm{Next}}
-\newcommand{\grbSeen}{\grbm{Seen}}
-
-\newcommand{\grbsource}{\grbs{s}}
-\newcommand{\grbfrontier}{\grbv{frontier}}
-\newcommand{\grbnext}{\grbv{next}}
-\newcommand{\grbseen}{\grbv{seen}}
-\newcommand{\grblevel}{\grbs{level}}
-
-\newcommand{\grbfrontieri}{\grbv{frontier1}}
-\newcommand{\grbnexti}{\grbv{next1}}
-\newcommand{\grbseeni}{\grbv{seen1}}
-
-\newcommand{\grbfrontierii}{\grbv{frontier2}}
-\newcommand{\grbnextii}{\grbv{next2}}
-\newcommand{\grbseenii}{\grbv{seen2}}
-
-\newcommand{\bfsfrontier}{\grbv{frontier}}
-\newcommand{\bfsnext}{\grbv{next}}
-\newcommand{\bfsseen}{\grbv{seen}}
-
-\newcommand{\atom}[1]{\mathsf{#1}}
 \newcommand{\grbind}[1]{\mathrm{ind}(#1)}

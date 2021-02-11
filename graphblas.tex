@@ -38,10 +38,10 @@ Additionally, we use $\grbm{D} = \grbdiag{\grba{j}, \grbs{n}}$ to construct a di
 
 Masks
 $\grbmC \grbmask{\grbm{M}}$ and
-$\grbvu \grbmask{\grbv{m}}$ are used to selectively write to the result matrix/vector.
+$\grbvw \grbmask{\grbv{m}}$ are used to selectively write to the result matrix/vector.
 The complements of the masks can be selected with the negation symbol, denoted with:
 $\grbmC \grbmask{\grbneg \grbm{M}}$ and
-$\grbvu \grbmask{\grbneg \grbv{m}}$,
+$\grbvw \grbmask{\grbneg \grbv{m}}$,
 respectively.
 
 Masks
@@ -51,8 +51,8 @@ are denoted with
 \begin{itemize}
 \item $\grbmC\grbmaskreplace{\grbm{M}}$
 \item $\grbmC\grbmaskreplace{\grbneg \grbm{M}}$
-\item $\grbvu\grbmaskreplace{\grbv{m}}$
-\item $\grbvu\grbmaskreplace{\grbneg \grbv{m}}$
+\item $\grbvw\grbmaskreplace{\grbv{m}}$
+\item $\grbvw\grbmaskreplace{\grbneg \grbv{m}}$
 \end{itemize}
 
 The structure of the mask is denoted with:
@@ -60,8 +60,8 @@ The structure of the mask is denoted with:
 \begin{itemize}
 \item $\grbmC\grbmask{\grbstr{\grbm{M}}}$
 \item $\grbmC\grbmask{\grbneg \grbstr{\grbm{M}}}$
-\item $\grbvu\grbmask{\grbstr{\grbv{m}}}$
-\item $\grbvu\grbmask{\grbneg \grbstr{\grbv{m}}}$
+\item $\grbvw\grbmask{\grbstr{\grbv{m}}}$
+\item $\grbvw\grbmask{\grbneg \grbstr{\grbv{m}}}$
 \end{itemize}
 
 Combining structure and replace semantics is possible:        
@@ -69,15 +69,15 @@ Combining structure and replace semantics is possible:
 \begin{itemize}
 \item $\grbmC\grbmaskreplace{\grbstr{\grbm{M}}}$
 \item $\grbmC\grbmaskreplace{\grbneg \grbstr{\grbm{M}}}$
-\item $\grbvu\grbmaskreplace{\grbstr{\grbv{m}}}$
-\item $\grbvu\grbmaskreplace{\grbneg \grbstr{\grbv{m}}}$
+\item $\grbvw\grbmaskreplace{\grbstr{\grbv{m}}}$
+\item $\grbvw\grbmaskreplace{\grbneg \grbstr{\grbv{m}}}$
 \end{itemize}
 
 Initializing scalars, vectors, and matrices (GraphBLAS methods):
 
 \begin{itemize}
     \item $\grbnewscalar{\grbss}{\grbfloat}{64}$
-    \item $\grbnewvector{\grbvu}{\grbfloat}{32}{n}$
+    \item $\grbnewvector{\grbvw}{\grbfloat}{32}{n}$
     \item $\grbnewmatrix{\grbmA}{\grbuint}{16}{m}{n}$
     \item $\grbnewmatrix{\grbmA}{\grbint}{64}{k}{m}$
 \end{itemize}

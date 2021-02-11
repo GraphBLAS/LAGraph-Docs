@@ -1,6 +1,7 @@
-\begin{figure*}[htb]
-\small
-\begin{minipage}[t]{0.23\linewidth}
+\begin{algorithm}[htb]
+	\label{alg:bfs-levels}
+	\caption{BFS / Levels variant.}
+	\DontPrintSemicolon
 	\KwIn{$\grbm{A}, \grbs{n}, \grbs{startVertex}$}
 	\Fn{BFS}{
 		$\grbv{f}(\grbs{startVertex}) = \grbT$ \;
@@ -12,9 +13,12 @@
 			\grbmA$ \;
 		}
 	}
-\end{minipage}
-\setcounter{AlgoLine}{0}%
-\begin{minipage}[t]{0.25\linewidth}
+\end{algorithm}
+
+\begin{algorithm}[htb]
+	\label{alg:bfs-parents}
+	\caption{BFS / Parents variant.}
+	\DontPrintSemicolon
 	\KwIn{$\grbm{A}, \grbs{n}, \grbs{startVertex}$}
 	\Fn{ParentsBFS}{
 		$\grbv{f}(\grbs{startVertex}) = 0$ \;
@@ -25,9 +29,12 @@
 			$\grbv{f} \grbmaskreplace{\grbneg \grbv{s}} = \grbv{f} \grbanyfirstjone \ \grbmA$ \;
 		}
 	}
-\end{minipage}
-\setcounter{AlgoLine}{0}%
-\begin{minipage}[t]{0.25\linewidth}
+\end{algorithm}
+
+\begin{algorithm}[htb]
+	\label{alg:bfs-push-pull}
+	\caption{Direction Optimizing (push/pull) BFS.}
+	\DontPrintSemicolon
 	\KwIn{$\grbm{A}, \grbm{A}\grbt, \grbs{n}, \grbs{startVertex}$}
 	\Fn{DirectionOptimizingBFS}{
 		$\grbv{f}(\grbs{startVertex}) = \grbT$ \;
@@ -43,38 +50,4 @@
 			}
 		}
 	}
-\end{minipage}
-\setcounter{AlgoLine}{0}%
-\begin{minipage}[t]{0.25\linewidth}
-	\KwIn{$\grbm{A}, \grbs{n}, \grba{startVertices}$}
-	\Fn{ConcurrentBFS}{
-		$\grbm{F} = \mathsf{diag}(\grba{startVertices}, n)$ \;
-
-		\For{$\grblevel = 1$ \textbf{to} $n-1$}{
-			$\grbm{S}\grbmask{\grbm{F}} = \grblevel$ \;
-
-			$\grbm{F}\grbmaskreplace{\grbneg \grbm{S}} = \grbm{F} %\grbanypair
-			\grbm{A} $ \;
-		}
-	}
-\end{minipage}
-%
-% \begin{minipage}{0.3\linewidth}
-% 	\KwData{$\grbm{f}$}
-% 	\Fn{doBFS}{
-% 		$\grbv{f}(\grbs{source}) = \grbT$ \;
-
-% 		\For{$\grblevel = 1$ \KwTo $\grbs{n}-1$}{
-% 			$\grbv{s} \grbmask{\grbv{f}} = \grblevel$ \;
-			
-% 			\If{$\mathit{TraversalShouldPush}(\grbmA, \grbv{f})$}{ %\Comment*{Decide to push/pull}
-% 				$\grbv{f} \grbmaskreplace{\grbneg \grbv{s}} = \grbv{f} \grbanypair \grbmA$
-% 			}
-% 			\Else{
-% 				$\grbv{f} \grbmaskreplace{\grbneg \grbv{s}} = \grbmA \grbanypair \grbv{f}$
-% 			}
-% 		}
-% 	}
-% \end{minipage}
-\caption{Sketch algorithms of BFS variants. The $\grbf{Push}{\grbm{A}, \grbv{f}}$ function makes a decision on whether it is cheaper to push or pull using heuristics based on the sparsity of the frontier $\grbv{f}$ and adjacency matrix $\grbm{A}$.}
-\end{figure*}
+\end{algorithm}

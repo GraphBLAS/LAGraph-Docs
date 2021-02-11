@@ -19,7 +19,7 @@
 
 		$\grbm{Tscaled} = \grbm{T} \grbplustimes \grbf{diag}{\grbv{deg}}$
 
-		$\grbm{Xfiltered} = \grbselect{\grbm{X}, \grbm{X} < \grbm{Tscaled}}$
+		$\grbm{Xfiltered} = \grbm{X} \grbselect{\grbm{X}, \grbm{X} < \grbm{Tscaled}}$
 
 		\Return{$(2 \grbtimes \grbm{T}) \grbminus \grbm{Xfiltered}$}
 	}

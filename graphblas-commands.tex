@@ -63,6 +63,9 @@
     \newcommand{\grbdontcare}{\_}
 
     \newcommand{\grboperationnoarg}[1]{\mathtt{#1}}
+
+    \newcommand{\grbewiseadd}[1]{\grbbinaryop{\cup[#1]}}
+    \newcommand{\grbewisemult}[1]{\grbbinaryop{\cap[#1]}}
 }{ % LaTeX mode
     \newcommand{\grbm}[1]{{\ifbool{colored}{\color{brown}}{}{\mathbf{#1}}}}% matrix
     \newcommand{\grbv}[1]{{\ifbool{colored}{\color{lilac}}{}{\mathbf{#1}}}}% vector
@@ -120,7 +123,10 @@
     \newcommand{\grbrange}[2]{#1 \! : \! #2}
     \newcommand{\grbdontcare}{\textvisiblespace}
 
-    \newcommand{\grboperationnoarg}[1]{\textrm{#1}}
+    \newcommand{\grboperationnoarg}[1]{\mathrm{#1}}
+
+    \newcommand{\grbewiseadd}[1]{\grbbinaryop{\cup[#1]}}
+    \newcommand{\grbewisemult}[1]{\grbbinaryop{\cap[#1]}}
 }
 
 % do not lange/rangle for tuples as it is already used for masks
@@ -181,6 +187,8 @@
 \newcommand{\grbplustext}{\grbbinaryop{plus}}
 \newcommand{\grbtimestext}{\grbbinaryop{times}}
 
+\newcommand{\grbgenericop}{\grboperator{op}}
+
 % boolean values
 \newcommand{\grbbooleanvalue}[1]{\mathtt{#1}}
 \newcommand{\grbtrue}{\grbbooleanvalue{TRUE}}
@@ -192,9 +200,6 @@
 
 % cardinality / count
 \newcommand{\grbcnt}[1]{| #1 |}
-
-\newcommand{\grbeWiseAdd}[1]{\underset{\raisebox{.4ex}{$\scriptscriptstyle\cup$}}{#1}}
-\newcommand{\grbeWiseMult}[1]{\underset{\raisebox{.4ex}{$\scriptscriptstyle\cap$}}{#1}}
 
 % operations
 \newcommand{\grboperation}[2]{\grboperationnoarg{#1}(#2)}

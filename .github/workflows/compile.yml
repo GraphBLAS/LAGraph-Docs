@@ -7,18 +7,10 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v1
-      - name: Compile tutorial
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: graphblas-tutorial.tex
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@master
         with:
           root_file: ms.tex
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: matmul.tex
       - name: Rename file and turn on colored mode
         run: |
           mv ms.pdf lagraph.pdf

@@ -1,0 +1,83 @@
+\section{The GraphBLAS}
+\label{sec:grb}
+
+\input{table-graphblas-notation}
+
+\paragraph{Goal}
+%
+The goal of \grb is to create a layer of abstraction between the graph algorithms and the graph analytics framework, separating the concerns of the algorithm developers from those of the framework developers and hardware designers.
+To achieve this, it builds on the theoretical framework of matrix operations on arbitrary semirings~\cite{DBLP:conf/hpec/KepnerABBFGHKLM16}, which allows defining graph algorithms in the language of linear algebra~\cite{DBLP:books/siam/11/KG2011}.
+To ensure portability, the \grb standard defines a C API that can be implemented on a variety of hardware including GPUs.
+
+\paragraph{Data structures}
+%
+A graph with $n$ vertices can be stored as a square adjacency matrix $\grbm{A} \in \grbuint^{n \times n}$, where rows and columns both represent vertices of the graph and element~$ A(i,j) $ contains the number of edges from vertex~$i$ to vertex~$j$. If the graph is undirected, the matrix is symmetric.
+
+\paragraph{Navigation}
+%
+The fundamental step in \grb is the multiplication of an adjacency matrix with another matrix or vector over a selected semiring.
+For example, 
+the operation $\grbm{HasMember} \grblorland \grbm{IsLocatedIn}$ computed over the \emph{``logical or.logical and''} semiring returns a matrix representing the Places where a Forum's members are located in.
+Meanwhile, when computed over the conventional arithmetic \emph{``plus.times''} semiring,
+$\grbm{HasMember} \grbplustimes \grbm{IsLocatedIn}$  also returns the number of such Persons.
+A traversal from a certain set of vertices can be expressed by using a boolean vector $\grbv{f}$ (often referred to as the \emph{frontier}, \emph{wavefront}, or \emph{queue})
+and setting \texttt{true} values for the elements corresponding to source vertices. For example, for Forums $\grbv{f} \in \grbbool^{\grbcnt{forums}}$,
+$\grbv{f} \grblorland \grbm{HasMember}$
+returns the Persons who belong to any of the forums in $\grbv{f}$.
+The BFS navigation step can also be captured using other semirings such as
+$\grbsemiringops{lor}{first}$, where $\grboperator{first}(x, y) = x$;
+$\grbsemiringops{lor}{second}$, where $\grboperator{second}(x, y) = y$; and
+$\grbsemiringops{any}{pair}$, where $\grbany(x,y)$ returns either $x$ or $y$, and $\grbpair(x,y) = 1$~\cite{GxBUserGuide}.
+
+\subsection{Notation}
+%
+\autoref{tab:graphblas-notation} contains the notation of \grb operations
+Additionally, we use $\grbm{D} = \grbdiag{\grba{j}, \grbs{n}}$ to construct a diagonal matrix $\grbm{D} \grbassign \{ \grba{j}, \grba{j}, [1, 1, \ldots, 1] \}$. The elements of the matrix are $\grbm{D}(\grbs{j}, \grbs{j}) = 1$ for $\grbs{j} \in \grba{j}$.
+
+\subsubsection{Masks}
+
+Masks
+$\grbmC \grbmask{\grbm{M}}$ and
+$\grbvu \grbmask{\grbv{m}}$ are used to selectively write to the result matrix/vector.
+The complements of the masks can be selected with the negation symbol, denoted with:
+$\grbmC \grbmask{\grbneg \grbm{M}}$ and
+$\grbvu \grbmask{\grbneg \grbv{m}}$,
+respectively.
+
+Masks
+with ``replace'' semantics (annihilating all elements outside the mask)
+are denoted with
+
+\begin{itemize}
+\item $\grbmC\grbmaskreplace{\grbm{M}}$
+\item $\grbmC\grbmaskreplace{\grbneg \grbm{M}}$
+\item $\grbvu\grbmaskreplace{\grbv{m}}$
+\item $\grbvu\grbmaskreplace{\grbneg \grbv{m}}$
+\end{itemize}
+
+The structure of the mask is denoted with:
+
+\begin{itemize}
+\item $\grbmC\grbmask{\grbstr{\grbm{M}}}$
+\item $\grbmC\grbmask{\grbneg \grbstr{\grbm{M}}}$
+\item $\grbvu\grbmask{\grbstr{\grbv{m}}}$
+\item $\grbvu\grbmask{\grbneg \grbstr{\grbv{m}}}$
+\end{itemize}
+
+Combining structure and replace semantics is possible:        
+
+\begin{itemize}
+\item $\grbmC\grbmaskreplace{\grbstr{\grbm{M}}}$
+\item $\grbmC\grbmaskreplace{\grbneg \grbstr{\grbm{M}}}$
+\item $\grbvu\grbmaskreplace{\grbstr{\grbv{m}}}$
+\item $\grbvu\grbmaskreplace{\grbneg \grbstr{\grbv{m}}}$
+\end{itemize}
+
+Initializing scalars, vectors, and matrices (GraphBLAS methods):
+
+\begin{itemize}
+    \item $\grbnewscalar{\grbss}{\grbfloat}{64}$
+    \item $\grbnewvector{\grbvu}{\grbfloat}{32}{n}$
+    \item $\grbnewmatrix{\grbmA}{\grbuint}{16}{m}{n}$
+    \item $\grbnewmatrix{\grbmA}{\grbint}{64}{k}{m}$
+\end{itemize}

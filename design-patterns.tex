@@ -1,0 +1,17 @@
+\section{Design Patterns}
+
+TODO: define selection matrix
+
+The literature defined selection matrix in two ways. For selecting k values from n, def1 uses an nxn square matrix with k non-zero elements in the diagonal.
+
+Using this, one can select rows and columns as follows:
+
+$S1 * A * S1$
+
+The rest of the rows and columns will be zeros.
+
+Def2 uses a kxn matrix with exactly one non-zero elements in each row.
+
+$S2 * A * S2^T$.
+
+Def2 changes the row/column indexes.

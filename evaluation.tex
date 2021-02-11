@@ -1,0 +1,97 @@
+\section{Evaluation}
+\label{sec:evaluation}
+
+\input{tab-input-graphs-condensed}
+
+\input{fig-results}
+
+\subsection{Benchmark Setup}
+
+\paragraph{Goal}
+%
+We designed an experiment to compare the performance and scalability of our implementation against the top solutions.
+
+\paragraph{Solutions}
+%
+We implemented our solution in C++ using version v3.3.3 of \gxb and the latest \lagraph library~\cite{DBLP:conf/ipps/MattsonDKBMMY19}.\footnote{\url{https://github.com/ldbc/sigmod2014-pc-graphblas}}
+We compared our implementation against two solutions of the programming contest created by teams ``AWFY'' (ranked 1st) and ``blxlrsmb'' (ranked 4th), updated for GCC~9.\footnote{\url{https://github.com/ftsrg/sigmod2014-pc-top-solutions}}
+
+% AWFY -> TU Munich
+% blxlrsmb -> Tsinghua University
+% We did not contact their original authors for further improvements, see "Threats to validity"
+
+\paragraph{Data sets}
+%
+We were unable to obtain the data sets used in the contest, therefore we generated similar ones using the LDBC SNB Datagen's~\cite{DBLP:conf/tpctc/PhamBE12} 2014 version.\footnote{\url{https://github.com/ldbc/ldbc_snb_datagen/releases/tag/early2014}} The data set statistics are shown in \autoref{tab:input-graphs}.
+We also implemented a parameter generator that produces query input parameters using uniform sampling.
+
+\paragraph{Environment}
+%
+We performed the experiments on a cloud virtual machine with 32 (logical)  Intel Xeon Skylake CPU cores clocked at 2GHz, 120GB RAM, and SSD storage, running Ubuntu 20.04. We used the GCC~9.3.0 compiler.
+We ran each benchmark with 80~different parameters.
+
+\subsection{Analysis}
+
+\paragraph{Performance}
+%
+We visualized the distribution of the execution times obtained during the experiments:
+load times are shown in \autoref{fig:load-times} and
+computation times in \autoref{fig:computation-times}.
+For \emph{load times}, other solutions consistently outperform our solution. AWFY provides particularly fast loads (which can be attributed to its usage of advanced CSV loading techniques presented in~\cite{DBLP:journals/pvldb/MuhlbauerRSRK013}).
+However, for \emph{computation times}, our solution is competitive for Q2 (often outperforming other solutions). It provides good performance for Q3 and Q4, staying within an order of magnitude compared to the other highly-optimized solutions.
+Our solution exhibits a bimodal distribution for Q1, which can be attributed to the configuration parameter $x$: for $x > -1$, computing the induced subgraph is expensive.
+The execution times of our solution for Q1 are noticeably longer than the competition's due to precomputing the entire induced graph (instead of computing the relevant edges on-the-fly during traversal).
+
+\paragraph{Conciseness}
+%
+We characterized the conciseness of each solution using lines of C++ code: %.All solutions were implemented in C++:
+AWFY consisted of 9,800 lines, 
+blxlrsmb used 6,500 lines,
+while our code used 3,500 lines.
+
+% =============== AWFY ===============
+% sigmod14-pc-top-solutions/AWFY$ cloc --exclude-dir include .
+%      131 text files.
+%      103 unique files.                                          
+%      414 files ignored.http://cloc.sourceforge.net v 1.60  T=0.50 s (104.0 files/s, 21166.1 lines/s)
+% -------------------------------------------------------------------------------
+% Language                     files          blank        comment           code
+% -------------------------------------------------------------------------------
+% C++                             17            952            495           4549
+% C                                2            226            100           1010
+% make                             3            428            197            924
+% CMake                           20            154             75            856
+% C/C++ Header                     5             99             67            296
+% XML                              4              0              0            149
+% Bourne Shell                     1              0              0              1
+% -------------------------------------------------------------------------------
+% SUM:                            52           1859            934           7785
+% -------------------------------------------------------------------------------
+
+% include/ folder:  exclude: grep -L "Moritz Kaufmann" `find include -type f`
+%                   include: ag -l "Moritz Kaufmann" include/
+
+% cloc `ag -l "Moritz Kaufmann" include/`
+%       27 text files.
+%       27 unique files.                              
+%        0 files ignored.
+
+% http://cloc.sourceforge.net v 1.60  T=0.03 s (823.7 files/s, 158708.5 lines/s)
+% -------------------------------------------------------------------------------
+% Language                     files          blank        comment           code
+% -------------------------------------------------------------------------------
+% C/C++ Header                    27            815            475           3912
+% -------------------------------------------------------------------------------
+% SUM:                            27            815            475           3912
+% -------------------------------------------------------------------------------
+
+% C/C++/header: 4549+1010+296+3912=9767 ~ 9800
+% ^^^^^^^^^^^^^^^ AWFY ^^^^^^^^^^^^^^^
+
+\paragraph{Threats to validity}
+%
+We remark that the solutions used in the experiments are 6+ years old and might be improved by further optimizations that were unavailable at the time of the contest.
+We have updated the solutions to GCC~9 but did not apply any further optimizations nor did we contact their original authors.
+
+%The programming contest required participants to solve a workload containing a mix of multiple queries. Therefore, solutions might have opted to create single-threaded implementations of simpler queries (while using the rest of the threads for the more complex queries).
+%Additionally, we had access to the optimizations of all teams (in the form of posters, presentations, and papers) that authors did not have access to during the contest.

@@ -1,0 +1,81 @@
+\section{Building Blocks in \grb}
+\label{sec:building-blocks}
+
+\input{fig-bfs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Dense Vertex Relabelling}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The vertices in the generated input graphs have \emph{sparse IDs}, \ie identifiers which can take any $\grbuint$ value. To map a set of $n$ sparse IDs to \emph{dense IDs} which take up consecutive values in the $[0, n-1]$ range, we need to perform \emph{dense vertex relabelling}~\cite{DBLP:conf/grades/ThenKK016}, also known as \emph{vertex permutation}~\cite{DBLP:journals/corr/abs-1806-01799} and \emph{mapping from sparse to dense keys}~\cite{DBLP:journals/pvldb/MuhlbauerRSRK013}.
+A straightforward way to implement this mapping from an array of sparse IDs $\grba{sparseids}$
+is to create a sparse vector as follows:
+$$
+\grbv{mapping} \grbassign \{ \grba{sparseids}, [0, 1, \ldots, n-1] \}
+$$
+Given a sparse ID~$s$, the \grb extract element operation $d = \grbv{mapping}(s)$ returns the corresponding dense ID~$d$.
+Meanwhile, mapping from a dense ID~$d$ to a sparse ID can be performed trivially with an array lookup $\grba{sparseids}[d]$.
+
+\paragraph{Implementation}
+Sparse vectors in \gxb are stored with their indices in increasing order, therefore this step requires a sorting operation.
+Then, lookups are executed using a binary search among the vector's indices (of non-zero values).
+In the rest of the paper, we assume that identifiers have already been relabelled to dense.
+%We have implemented this technique as procedure \lstinline{LAGraph_dense_relabel} in LAGraph~\cite{DBLP:conf/ipps/MattsonDKBMMY19}.
+
+\input{algo-bidir-bfs}
+\input{algo-msbfs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bidirectional Search}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Both queries 1 and 3 require \emph{bidirectional search}:
+the former searches for the shortest path between two Persons (where each pair of Persons along the path edge satisfies a constraint on the number of interactions),
+while the latter looks for pairs of Persons who are at most $h$ hops away.
+Bidirectional search in \grb can be implemented as two alternating BFS traversals as shown in \autoref{alg:GraphBLAS:bidirectional} and illustrated in \autoref{fig:bidirectional-bfs}.
+To perform a search performed between vertices $v_1$ and $v_2$, we initialize two $\grbfrontier$ vectors, each containing one non-zero value at position $v_1$ and $v_2$, respectively.
+In each iteration $l$, we advance the first frontier and check whether its intersection with the current (not yet advanced) state of the second frontier contains any elements.
+If so, we found a path of length $2 \times l - 1$.
+If not, we advance the second frontier and intersect it with the first frontier.
+If the intersection has any elements, we found a path of length $2 \times l$.
+If the new frontier is empty in either case, no path can be found between vertices $v_1$ and $v_2$.
+%After $\lceil n/2 \rceil$ iterations, we have traversed a
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Multi-Source Breadth-First Search}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\paragraph{Boolean MSBFS}
+%
+Highly-optimized multi-source BFS algorithms have been used by multiple teams in the programming contest~\cite{DBLP:journals/pvldb/ThenKCHPK0V14,DBLP:conf/edbt/KaufmannTK017} to efficiently evaluate queries 3 and 4.
+In the \grb community, it is established that \emph{matrix-matrix multiplication} is a natural and efficient way to express MSBFS~\cite{DBLP:journals/corr/abs-1908-01407}.
+Using this idea, a \grb-based MSBFS algorithm is shown in \autoref{alg:GraphBLAS:MSBFS:bool} and illustrated in \autoref{fig:msbfs-boolean}.
+
+\paragraph{Bitwise MSBFS}
+ %
+A key optimization among top-ranking teams was using \emph{bit arrays and bitwise manipulations} to improve the performance of MSBFS.
+With the recent introduction of \emph{bitwise operators} (\eg %\mbox{\lstinline{GrB_BOR}}, 
+\mbox{\lstinline{GrB_BAND}}) in GraphBLAS v1.3~\cite{GraphBLASv13}, it is possible to use this optimization for MSBFS, shown in
+\autoref{alg:GraphBLAS:MSBFS:bitwise}.
+%However, as the illustration in \autoref{fig:msbfs-bitwise} suggests, a limitation of this representation is that there are numerous non-zero elements in the matrix (with a few non-zero bits), while a few fully filled values (\texttt{11...1}) in the $\grbSeen$ matrix rarely occur until the final steps of the traversal. As these are the only elements which can be used as part of a complement mask $\grbmask{\neg\grbSeen}$, the performance improvements from masking in the bitwise case are more limited than in the Boolean case.
+
+%Hence, while the data structure is more compact, the performance improvements are smaller.
+
+
+
+%the scope of the \texttt{mxm} computation.
+%This makes the performance enhancing effect of masking limited.
+%the scope of the \texttt{mxm} computation.
+%\footnote{We have experimented with using a mask based on the %``fully filled'' ... values in $\grbSeen$ but found that the overhead of creating it offsets its performance benefit.
+%In another experiment, we have reordered the rows/columns of the matrix by decreasing degrees but did not observe any performance improvements.}
+
+
+%To allow multiple concurrent BFS operations to run on a single core, we use \lstinline{UINT64} matrices with bitwise operations to keep track of the state of the traversal:
+%$\grbfrontier, \grbnext, \grbseen \in \grbbool^{\grbcnt{V} \times \grbcnt{B}}$.%
+%\footnote{\grb implementations could support the representation of binary matrices as \lstinline{UINT64} values seamlessly, similarly to the \lstinline{std::vector<bool>} data structure in C++. However, due to the rich set of operation modifiers, \eg transpose and masking, implementing this would be a considerable challenge.}
+
+
+%CCV
+%We exploit that the graph is undirected, therefore, the number of steps from vertex $v_i$ to $v_j$ is the same as from $v_j$ to $v_i$. Due to this, if vertex $v_i$ reaches $k$ other vertices at traversal level $l$, we know that it is also reached by $k$ other traversals. Hence, we can perform a row-wise reduce on the \textit{popcount} values and increase $s(n)$ of each vertex by $l \times t$.
+%Possible centrality tricks by Team AWFY~\cite{DBLP:journals/dbsk/ThenGKN17}.

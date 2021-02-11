@@ -1,0 +1,83 @@
+\begin{figure}
+    \begin{subfigure}[b]{0.5\linewidth}
+        \centering
+        \begin{tikzpicture}[-stealth,align=center,every node/.style={circle, draw}]
+            \sf % use sans-serif font
+            \node[]              (V1) {1};
+            \node[, right=of V1] (V2) {2};
+            \node[, below=of V1] (V3) {3};
+            \node[, right=of V3] (V4) {4};
+            \node[, right=of V4] (V5) {5};
+            \draw (V1) to [bend left] (V2);
+            \draw (V1) to [bend left] (V3);
+            \draw (V2) to [bend left] (V4);
+            \draw (V2) to [bend left] (V5);
+            \draw (V3) to [bend left] (V1);
+            \draw (V3) to [bend left] (V4);
+            \draw (V4) to [bend left] (V5);
+        \end{tikzpicture}
+        \caption{Graph.}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+        \centering
+        \setlength{\arraycolsep}{2pt}
+        \renewcommand{\arraystretch}{0.8}
+        $$
+            \begin{bNiceMatrix}[first-row,first-col]
+              & 1     & 2     & 3     & 4     & 5     \\
+            1 &       & \grbT & \grbT &       &       \\
+            2 &       &       &       & \grbT & \grbT \\
+            3 & \grbT &       &       & \grbT &       \\
+            4 &       &       &       &       & \grbT \\
+            5 &       &       &       &       &       \\
+            \end{bNiceMatrix}
+        $$
+        \caption{Adjacency matrix.}
+    \end{subfigure}
+
+    \caption{Example directed graph and its adjacency matrix.}
+    \label{fig:example-graph}
+\end{figure}
+
+
+\begin{align*}
+    \grbv{s} =
+    \begin{bNiceMatrix}[first-row]
+        1 & 2     & 3     & 4     & 5     \\
+        \grbT &   &       &       &       \\
+    \end{bNiceMatrix}
+    \qquad
+    \grbv{f}                                                                                & =
+    \begin{bNiceMatrix}[first-row]
+        1 & 2     & 3     & 4     & 5     \\
+        & \grbT & \grbT &       &       \\
+    \end{bNiceMatrix}
+    \\
+    %
+    \grbv{f} = \grbv{f} \grbanypair \grbm{A}                           \qquad \grbv{f}      & =
+    \begin{bNiceMatrix}[first-row]
+        1 & 2     & 3     & 4     & 5     \\
+        \grbT &       &       & \grbT & \grbT \\
+    \end{bNiceMatrix}
+    \\
+    %
+    \grbv{f}\grbmask{\grbneg \grbv{s}} = \grbv{f} \grbanypair \grbm{A} \qquad \grbv{f}      & =
+    \begin{bNiceMatrix}[first-row]
+        1 & 2     & 3     & 4     & 5     \\
+        &       &       & \grbT & \grbT \\
+    \end{bNiceMatrix}
+    \\
+    %
+    \grbv{f}\grbmask{\grbneg \grbv{s}} = \grbv{f} \grbminfirstjone \grbm{A} \qquad \grbv{f} & =
+    \begin{bNiceMatrix}[first-row]
+        1 & 2     & 3     & 4     & 5     \\
+        &       &       & 2 & 2 \\
+    \end{bNiceMatrix}
+    \\
+    %
+    \grbv{f}\grbmask{\grbneg \grbv{s}} = \grbv{f} \grbanyfirstjone \grbm{A} \qquad \grbv{f} & =
+    \begin{bNiceMatrix}[first-row]
+        1 & 2     & 3     & 4     & 5     \\
+        &       &       & 2 & 2 \text{ or } 4 \\ % benign race condition
+    \end{bNiceMatrix}
+\end{align*}

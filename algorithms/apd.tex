@@ -1,0 +1,32 @@
+\begin{algorithm}[htb]
+	\label{alg:apd}
+	\caption{All-pairs shortest distance (on undirected, unweighted graphs)~\cite{DBLP:journals/jcss/Seidel95}.}
+	\DontPrintSemicolon
+	\KwData{...}
+	\KwResult{...}
+	\Fn{$\mathit{APD}(\grbm{A}, \grbs{n}, \grbv{deg})$}{
+		$\grbm{Z} = \grbm{A} $ \;
+		$\grbm{Z} \grbaccumeq{\grbplus} \grbm{A} \grbplustimes \grbm{A} $ \;
+		$\grbm{B} = \{ \grbselect{\grbm{Z}, \grboperationnoarg{offdiag}} \} $ \Comment{use the pattern as a Boolean matrix}
+
+		\If{$\grbm{A} == \grbm{B}$}{
+			\Return{$\grbm{A}$}
+		}
+
+		$\grbm{T} = \mathit{APD}(\grbm{B}, \grbs{n}, \grbv{deg})$ \;
+
+		$\grbm{X} = \grbm{T} \grbplustimes \grbm{A}$ \;
+
+		$\grbm{Tscaled} = \grbm{T} \grbplustimes \grbf{diag}{\grbv{deg}}$
+
+		$\grbm{Xfiltered} = \grbselect{\grbm{X}, \grbm{X} < \grbm{Tscaled}}$
+
+		\Return{$(2 \grbtimes \grbm{T}) \grbminus \grbm{Xfiltered}$}
+	}
+
+	\Fn{$\mathit{APD}(\grbm{A})$}{
+		$\grbv{deg} = \grbreduce{\grbplus}{\grbs{i}}{\grbm{A}}{\grbs{i}, :}$ \;
+		$\grbm{Distance} = \textit{APD}(\grbm{A}, \grbs{n}, \grbv{deg})$ \;
+		$\grbv{sp} = \grbreduce{\grbplus}{\grbs{i}}{\grbm{Distance}}{\grbs{i}, :}$ \;
+	}
+\end{algorithm}

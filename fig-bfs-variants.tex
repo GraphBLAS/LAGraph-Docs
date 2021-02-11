@@ -1,0 +1,26 @@
+\begin{figure}
+\centering
+\begin{tikzpicture}[-stealth,align=center,every node/.style={scale=0.85}]
+    \tikzset{
+        algorithm/.style={%
+            draw,
+            rounded corners,
+            minimum width=40mm,
+            minimum height=8mm,
+            font=\sffamily,
+            node distance=3.1cm,
+            }
+    }
+    \node[algorithm] (GT) {Graph traversal step \\ $\grbv{f} = \grbv{f} \grbm{A}$};
+    \node[algorithm, below of=GT, node distance=1.5cm] (BFS) {BFS step \\ $\grbv{f}\grbmask{\grbneg \grbv{s}} = \grbv{f} \grbm{A}$};
+    \node[algorithm, below left  of=BFS] (pBFS)  {BFS step computing parent \\ $\grbv{f}\grbmask{\grbneg \grbv{s}} = \grbv{f} \grbanysecondione \grbm{A}$};
+    \node[algorithm, below       of=BFS, node distance=3.3cm] (doBFS) {Direction-optimizing BFS step \\ \rm Switch between $\grbv{f}\grbmask{\grbneg \grbv{s}} = \grbv{f} \grbm{A}$ and $ \grbv{f}\grbmask{\grbv{\grbneg s}} = \grbm{A}\grbt \grbv{f} $};
+    \node[algorithm, below right of=BFS] (msBFS) {Concurrent BFS steps \\ $\grbv{F}\grbmask{\grbneg \grbv{S}} = \grbv{F} \grbm{A}$};
+    \draw (GT)  to [             ] node[anchor=west] {use mask on $\grbneg\grbv{s}$} (BFS);
+    \draw (BFS) to [bend right=20] node[anchor=east] {use $\grbsecondione$ operator \\ for multiplication} (pBFS);
+    \draw (BFS) to [             ] node[anchor=south west] {use both \\ $\grbm{A}$ and $\grbm{A}\grbt$} (doBFS);
+    \draw (BFS) to [bend left=20 ] node[anchor=west] {use frontier matrix $\grbm{F}$\\ and seen matrix $\grbm{S}$ } (msBFS);
+\end{tikzpicture}
+\caption{Variants of graph traversal expressed using sparse vector-matrix and matrix-matrix multiplication kernels.}
+\label{fig:bfs-variants}
+\end{figure}
